@@ -6,12 +6,12 @@
 //
 
 import Foundation
-extension Data: TOPKitNameSpaceProtocol {}
-public extension TOPKitNameSpace where T == Data {
+
+public extension Data {
 
     /// byte数组
     var bytes: [UInt8] {
-        return Array(base)
+        return Array(self)
     }
 
     /// 转hex字符串

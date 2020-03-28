@@ -6,41 +6,40 @@
 //
 
 import Foundation
-extension String: TOPKitNameSpaceProtocol {}
 
 // MARK: -  HexSting -
 
-public extension TOPKitNameSpace where T == String {
+public extension String {
 
     func toHexString() -> String {
-        guard let data = base.data(using: .utf8) else {
+        guard let data = data(using: .utf8) else {
             return ""
         }
-        return data.top.toHexString()
+        return data.toHexString()
     }
 
     /// 移除Ox前缀
     /// - Returns: 移除0x后的字符串
     func removeHexPrefix() -> String {
-        if base.hasPrefix("0x") {
-            return String(base.dropFirst(2))
+        if hasPrefix("0x") {
+            return String(dropFirst(2))
         }
-        return base
+        return self
     }
 
     /// 增加0x前缀
     /// - Returns: 添加0x后的字符串
     func add0XHexPrefix() -> String {
-        if base.hasPrefix("0x") {
-            return base
+        if hasPrefix("0x") {
+            return self
         }
-        return "0x" + base
+        return "0x" + self
     }
 
     /// hex格式字符串转Data类型
     /// - Returns: Data
     func hexStringToData() -> Data {
-        var hex = base.replacingOccurrences(of: "0x", with: "")
+        var hex = replacingOccurrences(of: "0x", with: "")
         var data = Data()
         while !hex.isEmpty {
             let c: String = String(hex[..<hex.index(hex.startIndex, offsetBy: 2)])
@@ -71,16 +70,16 @@ public extension TOPKitNameSpace where T == String {
 
 // MARK: -  Encode - 编码
 
-public extension TOPKitNameSpace where T == String {
+public extension String {
 
     /// URL编码
     func urlEncode() -> String {
         var resultStr = ""
-        for (_, character) in base.enumerated() {
+        for (_, character) in enumerated() {
 
             // 注意字符串内 \ 是转义字符
             if "!#$%&’()*+,-./:;<=>?@[]^_`{|}~\\".contains(character) {
-                let sub = "\(character)".top.toHexString()
+                let sub = "\(character)".toHexString()
                 resultStr += "%" + sub.uppercased()
                 continue
             }
@@ -92,7 +91,7 @@ public extension TOPKitNameSpace where T == String {
 
     /// base64编码
     func base64Encode() -> String? {
-        if let data = base.data(using: .utf8) {
+        if let data = data(using: .utf8) {
             return data.base64EncodedString()
         }
         return nil
@@ -100,7 +99,7 @@ public extension TOPKitNameSpace where T == String {
 
     /// base64解码
     func decodeBase64() -> String? {
-        if let data = Data(base64Encoded: self.base) {
+        if let data = Data(base64Encoded: self) {
             return String(data: data, encoding: .utf8)
         }
         return nil
@@ -109,7 +108,7 @@ public extension TOPKitNameSpace where T == String {
 
 // MARK: - GBK
 
-public extension TOPKitNameSpace where T == String {
+public extension String {
 
     /// 通过GBK编码的Data 生成字符串
     /// - Parameter gbkData: GBK编码的Data
@@ -119,7 +118,7 @@ public extension TOPKitNameSpace where T == String {
         let encoding = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(cfEncoding.rawValue))
         // 从GBK编码的Data里初始化NSString, 返回的NSString是UTF-16编码
         if let str = NSString(data: gbkData, encoding: encoding) {
-            base = str as String
+            self = str as String
         } else {
             return nil
         }
@@ -129,14 +128,14 @@ public extension TOPKitNameSpace where T == String {
     var gbkData: Data {
         let cfEncoding = CFStringEncodings.GB_18030_2000
         let encoding = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(cfEncoding.rawValue))
-        let gbkData = (base as NSString).data(using: encoding)!
+        let gbkData = (self as NSString).data(using: encoding)!
         return gbkData
     }
 }
 
 // MARK: -  Date
 
-public extension TOPKitNameSpace where T == String {
+public extension String {
     /// 将当前日期字符串转换为字符串格式的日期
     /// 如果数据字符串格式和参数格式不一致，则返回nil。
     /// - Parameter format: date 格式的字符串
@@ -144,6 +143,6 @@ public extension TOPKitNameSpace where T == String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
         formatter.timeZone = timezone
-        return formatter.date(from: base)
+        return formatter.date(from: self)
     }
 }
