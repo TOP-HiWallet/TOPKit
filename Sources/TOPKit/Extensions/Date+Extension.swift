@@ -7,7 +7,9 @@
 
 import Foundation
 
-public extension Date {
+extension Date: TOPKitNameSpaceProtocol {}
+
+public extension TOPKitNameSpace where T == Date {
 
     /// 获取带有特定格式的字符串
     /// - Parameter dateFormatter: "yyyy-MM-dd HH:mm" 格式的字符串
@@ -16,6 +18,6 @@ public extension Date {
         let format = DateFormatter()
         format.dateFormat = dateFormatter
         format.timeZone = timezone
-        return format.string(from: self)
+        return format.string(from: base)
     }
 }
