@@ -17,14 +17,14 @@ public extension TOPKitNameSpace where T == Data {
     /// 转hex字符串
     /// - Returns: hex字符串
     func toHexString() -> String {
-        return bytes.toHexString()
+        return bytes.toHexStr()
     }
 }
 
 public extension Data {
     /// 通过hex字符串初始化Data
     /// - Parameter hex: hex格式字符串
-    init(hex: String) {
-        self.init([UInt8](hex: hex))
+    init(hexStr: String) {
+        self.init([UInt8](hexStr: hexStr))
     }
 }

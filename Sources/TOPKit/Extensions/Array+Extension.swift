@@ -8,9 +8,9 @@
 import Foundation
 
 public extension Array {
-    init(reserveCapacity: Int) {
+    init(reserveCapacityValue: Int) {
         self = [Element]()
-        self.reserveCapacity(reserveCapacity)
+        reserveCapacity(reserveCapacityValue)
     }
 
     var slice: ArraySlice<Element> {
@@ -22,11 +22,11 @@ public extension Array where Element == UInt8 {
 
     /// 通过hex字符串初始化数组
     /// - Parameter hex: hex字符串
-    init(hex: String) {
-        self.init(reserveCapacity: hex.unicodeScalars.lazy.underestimatedCount)
+    init(hexStr: String) {
+        self.init(reserveCapacityValue: hexStr.unicodeScalars.lazy.underestimatedCount)
         var buffer: UInt8?
-        var skip = hex.hasPrefix("0x") ? 2 : 0
-        for char in hex.unicodeScalars.lazy {
+        var skip = hexStr.hasPrefix("0x") ? 2 : 0
+        for char in hexStr.unicodeScalars.lazy {
             guard skip == 0 else {
                 skip -= 1
                 continue
@@ -62,7 +62,7 @@ public extension Array where Element == UInt8 {
 
     /// 数组转hex字符串
     /// - Returns: hex字符串
-    func toHexString() -> String {
+    func toHexStr() -> String {
         return `lazy`.reduce("") {
             var s = String($1, radix: 16)
             if s.count == 1 {
